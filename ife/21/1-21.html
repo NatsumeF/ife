@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.show-likes div,.show-like div{
+			display:inline-block;
+			height: 40px;
+			color: #fff;
+			background:#9ff;
+			margin: 10px;
+			font-size: 25px;
+			line-height: 40px;
+		}
+		.user-like .show-like{
+			min-height: 40px;
+		}
+		
+		.show-likes .mouseDiv,.show-like .mouseDiv{
+			background: red;
+		}
+	</style>
+</head>
+<body>
+	<div class="user-like">
+		<span>tag:</span>
+		<input type="text" class="input-like"/>
+		<div class="show-like">
+			<div class="mouseDiv"></div>
+		</div>
+	</div>
+	<div>	
+		<textarea name="textarea" class="input-likes-arr" cols="30" rows="5"></textarea>
+		<button class="add-likes">确认兴趣爱好</button>
+	</div>
+	<div class="show-likes">
+	</div>
+</body>
+<script>
+"use strict"
+function $(ele, flag) {
+	if (flag) {
+		return document.getElementsByClassName(ele);
+	}
+	return document.getElementsByClassName(ele)[0];
+};
+
+function AddLike(ele, text) {
+	this.ele = ele;
+	this.text = this.initArr(text);
+	this.createDiv();
+};
+
+AddLike.prototype = {
+	createDiv: function() {
+		var _html = ""
+		for (let i = 0; i < this.text.length; i++) {
+			_html += "<div>"+this.text[i]+"</div>"
+		}
+		this.ele.innerHTML = _html;
+		this.addMouse();
+	},
+	addMouse: function() {
+		var that=this;
+		for (let i = 0; i < this.ele.children.length; i++) {
+			console.log(this.ele.children[i])
+			this.ele.children[i].addEventListener("mouseover", function(e) {
+				if (this.tagName === "DIV") {
+					this.innerHTML = "点击删除"+that.text[i];
+					this.classList.add("mouseDiv");
+				}
+			})
+			this.ele.children[i].addEventListener("mouseout", function(e) {
+				if (this.tagName === "DIV") {
+					this.innerHTML=that.text[i];
+					this.classList.remove("mouseDiv")
+				}
+			})
+		}
+	},
+	initArr: function(data) {
+		if (typeof data.length === "string" && typeof data != undefined) {
+			var _arr = [];
+			_arr.push(data);
+			data = _arr;
+		}
+		var newArr = [];
+		if (data.length > 0) {
+			for (let i = 0; i < data.length; i++) {
+				if (newArr.indexOf(data[i]) === -1) {
+					newArr.push(data[i]);
+				}
+			}
+			if (newArr.length > 10) {
+				newArr = newArr.slice(newArr.length - 10, newArr.length);
+			}
+		}
+		return newArr;
+	}
+};
+(function(){
+	var arr=[],	
+		arrs=[],
+		inputLike=$("input-like"),
+		showLike=$("show-like"),
+		showLikes=$("show-likes"),
+		addLikes=$("add-likes");
+		inputLike.addEventListener("keyup",function(e){
+			var str=inputLike.value,
+				sliceStr=str.slice(str.length-1);
+			if(e.keyCode===13||(/(,| |\,)$/.test(str))){
+				str=str.trim();
+				if(str!=""){
+					arr.push(str);
+				}
+				new AddLike(showLike,arr);
+			}
+		})
+
+
+
+
+
+
+
+
+
+
+
+})()/*
+	var unshift=$("unshift")[0],
+		push=$("push")[0],
+		shift=$("shift")[0],
+		pop=$("pop")[0],
+		inputArr=$("inputArr")[0],
+		inputArray,
+		array=[],
+		detecInp=$("detecInp")[0],
+		detecBut=$("detecBut")[0],
+		showDiv=$("showDiv")[0];
+		//忽略IE ;
+		document.addEventListener("click",function(e){
+			inputArray=inputArr.value.trim().split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function(item){
+				if(item!==null&&item.length>0){
+					return true;
+				}else{
+					return false;
+				}
+			});
+			if(e.target==unshift){
+				for(let i =0;i<inputArray.length;i++){
+					var div=document.createElement("div");
+					array.unshift(inputArray[i])
+					div.innerHTML=inputArray[i];
+					if(showDiv.children.length===0){
+						showDiv.appendChild(div);
+					}else{
+						showDiv.insertBefore(div,showDiv.children[0]);
+						console.log(showDiv.children[0].innerHTML)
+					}	
+				}
+			}
+			if(e.target==push){
+				for(let i =0;i<inputArray.length;i++){
+					array.push(inputArray[i])
+					var div=document.createElement("div");
+					div.innerHTML=inputArray[i];
+					showDiv.appendChild(div);
+				}
+			}
+			if(e.target===shift){
+				if(showDiv.children.length!==0){
+					array.shift(inputArray[0])
+					showDiv.removeChild(showDiv.children[0]);
+				}
+				
+			}
+			if(e.target===pop){
+				if(showDiv.children.length!==0){
+					array.pop(inputArray[inputArray.length-1])
+					showDiv.removeChild(showDiv.children[showDiv.children.length-1])
+				}				
+			}
+			if(e.target===detecBut){
+				var str=detecInp.value.trim(),
+					_div=showDiv.getElementsByTagName("div"),
+					len=_div.length;
+				for(let i =0;i<len;i++){
+					var html = array[i];
+					_div[i].innerHTML=html;
+					_div[i].innerHTML=html.replace(new RegExp(str, "g"),"<span class='addColor1'>"+str+"</span>");
+				}
+			}
+		})
+}
+*/
+</script>
+</html>
