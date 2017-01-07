@@ -5,8 +5,9 @@
 	<title>Document</title>
 	<style>
 		.show-likes div,.show-like div{
-			display:inline-block;
 			height: 40px;
+			display: inline-block;
+			white-space:nowrap; 
 			color: #fff;
 			background:#9ff;
 			margin: 10px;
@@ -16,7 +17,6 @@
 		.user-like .show-like{
 			min-height: 40px;
 		}
-		
 		.show-likes .mouseDiv,.show-like .mouseDiv{
 			background: red;
 		}
@@ -67,7 +67,7 @@ AddLike.prototype = {
 			console.log(this.ele.children[i])
 			this.ele.children[i].addEventListener("mouseover", function(e) {
 				if (this.tagName === "DIV") {
-					this.innerHTML = "点击删除" + that.text[i];
+					this.innerHTML = "点击删除 " + that.text[i];
 					this.classList.add("mouseDiv");
 				}
 			})
@@ -118,6 +118,7 @@ AddLike.prototype = {
 		if (e.keyCode === 13 || (/(,| |\,)$/.test(str))) {
 			str = str.trim();
 			if (str != "") {
+				str=str.split(" ")[0];
 				arr.push(str);
 			}
 			inputLike.value = "";
