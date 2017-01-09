@@ -44,17 +44,21 @@
             margin:10px 0 0 50px;
             display: inline-block;
             position: relative;
+            overflow: hidden;
+            background: #eaaaaf;
         }
         .show .show-left{
             display: inline-block;
             float: left;
-            background: #eaaaaf;
             width: 20px;
             height: 100px;
+            position: relative;
+            text-align:center;
         }
         .show .show-left span{
             display: inline-block;
-            width: 20px;
+            width: 18px;
+            height: 18px;
             text-align:center;
              word-break: break-all;
             font-weight: 600;
@@ -229,8 +233,8 @@
         <div class="show">
             <div class="show-left"></div>
             <textarea class="user-in" name="" id="" cols="30" rows="10" autofocus></textarea>
-             <button type="submit">确认</button>
         </div>
+         <button type="submit">确认</button>
         <br>
     <span>
         ps:     go :往蓝色方向走一格;
@@ -257,24 +261,23 @@ var deg = 0,
     valueArr = [],
     but = document.getElementsByTagName("button")[0],
     _moveArr = ["go", "tunlef", "tunrig", "tunbac", "tralef", "tranrig", "trabot", "tratop", "movbot", "movlef", "movtop", "movrig"];
-    
-    showLeft.style.height = window.getComputedStyle(input).height;
-    input.addEventListener("keyup", function(e) {
-        valueArr = input.value.trim().split("\n").map(function(item) {
-            return item.trim().replace(/\s/g, "").toLowerCase();
-        });
-        valueArr.go = true;
-        showLeft.innerHTML = "";
-        valueArr.forEach(function(item, index) {
-            if (_moveArr.indexOf(item) != -1) {
-                showLeft.innerHTML += "<span>" + (index + 1) + "<sapn>"
-            } else {
-                showLeft.innerHTML += "<span class='erorr'>" + (index + 1) + "<sapn>"
-                valueArr.go = false;
-            }
 
-        })
+showLeft.style.height = window.getComputedStyle(input).height;
+input.addEventListener("keyup", function(e) {
+    valueArr = input.value.trim().split("\n").map(function(item) {
+        return item.trim().replace(/\s/g, "").toLowerCase();
+    });
+    valueArr.go = true;
+    showLeft.innerHTML = "";
+    valueArr.forEach(function(item, index) {
+        if (_moveArr.indexOf(item) != -1) {
+            showLeft.innerHTML += "<span>" + (index + 1) + "<sapn>"
+        } else {
+            showLeft.innerHTML += "<span class='erorr'>" + (index + 1) + "<sapn>"
+            valueArr.go = false;
+        }
     })
+})
 //修正div的left和top,给出出界提示
 function changeMove(left, top) {
     if (left > 500) {
@@ -380,7 +383,11 @@ var divMove = {
         this.go();
     }
 }
-but.onclick = (function() {
+input.addEventListener("scroll",function(){
+    showLeft.style.top =-this.scrollTop+"px";
+    console.log(showLeft.style.top)
+})
+but.addEventListener("click", (function() {
     //防止在0.5s内重复点击导致div错位;
     //防止多次点击导致定时器bug
     var last = new Date().getTime(),
@@ -411,6 +418,6 @@ but.onclick = (function() {
             }, 1500)
         }
     }
-})()
+})())
 </script>
 </html>
