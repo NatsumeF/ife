@@ -4,6 +4,7 @@ function FlyCar(ele,no) {
 	this.NO = no;
 	this.div=null;
 };
+//初始化
 FlyCar.prototype.init = function(data) {
 	this.energy = 100; //能量
 	this.speed = Number(data.speed); //速度
@@ -15,6 +16,7 @@ FlyCar.prototype.init = function(data) {
 	this.cond=2;
 	this.show();
 };
+//添加飞船
 FlyCar.prototype.createCar = function() {
 	if (this.div === null) {
 		this.div = $("<div class='ball" + this.NO + "'>" +
@@ -26,6 +28,7 @@ FlyCar.prototype.createCar = function() {
 		this.div.appendTo(this.ele)
 	}
 };
+//显示飞船；
 FlyCar.prototype.show = function() {
 	clearInterval(this.addTime);
 	clearInterval(this.moveTime);
@@ -33,12 +36,14 @@ FlyCar.prototype.show = function() {
 	this.div.show();
 	this.lookMove();
 };
+//移除飞船
 FlyCar.prototype.hide = function() {
 	clearInterval(this.addTime);
 	clearInterval(this.moveTime);
 	this.cond=3;
 	this.div.remove();
 };
+//对飞船的UI进行动态改变
 FlyCar.prototype.lookMove = function() {
 	this.div.find(".number").html(this.energy.toFixed()) ;
 	this.div.find(".oback").css({
@@ -48,6 +53,7 @@ FlyCar.prototype.lookMove = function() {
 		transform : "rotate(" + this.deg + "deg)"
 	});
 };
+//飞船开始移动
 FlyCar.prototype.move = function() {
 	var than = this;
 		this.cond=1;
@@ -64,6 +70,7 @@ FlyCar.prototype.move = function() {
 		than.lookMove()
 	}, 50)
 };
+//停止工作 添加能源；
 FlyCar.prototype.addWork = function() {
 	var than = this;
 		this.cond=2;
@@ -78,7 +85,7 @@ FlyCar.prototype.addWork = function() {
 		than.lookMove()
 	}, 1000)
 };
-//接受命令;
+//接受命令;data为8位数2进制字符串或数字
 FlyCar.prototype.listen = function(data) {
 	var data=dataDeal.deal(data),
 		no=data.id,
@@ -94,6 +101,7 @@ FlyCar.prototype.listen = function(data) {
 		}
 	}
 };
+//发送飞船当前状态; 由main模块每秒调用一次；
 FlyCar.prototype.speak=function(){
 	var data=dataDeal.deal(this.NO.toFixed(),this.cond.toFixed(),this.energy.toFixed());
 	//console.log(data+"dly")

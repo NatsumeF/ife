@@ -7,16 +7,22 @@
 		textarea.value += text + "\n";
 		textarea.scrollTop = textarea.scrollHeight;
 	}
+
+	//控制面板单例；未单独开设一个模块；
 	var flycar = {
 		//仓库里面的车;
 		id: [1, 2, 3, 4],
+		//空中存在的飞船
 		main: [],
+		//每架飞船的状态
 		status: [false, false, false, false],
+		//对数组进行排序
 		sortId: function() {
 			this.id.sort(function(a, b) {
 				return a - b;
 			})
 		},
+		//信号发射
 		random: function(data) {
 			var me = this;
 			var _data=dataDeal.deal(data),
@@ -51,6 +57,7 @@
 			}
 		},
 		time:null,
+		//用于接收飞船信号 并将其转化为可视信息防止到显示板;因为信息传播需要时间 所以显示信息和飞机状态会延时1s;
 		showCar:function(){
 			var me = this;
 			clearInterval(this.time);
@@ -68,6 +75,7 @@
 			},1000)
 		}
 	};
+	//创建控制面板;控制面板可以重复使用 不移除dom;只控制display;
 	var consoles= {
 		index: 1,
 		createDiv: function() {
@@ -83,6 +91,7 @@
 			}
 		}
 	};
+	//对按钮进行初始化；
 	$(".new-car-but").on("click", function() {
 		if (flycar.id.length > 0) {
 			flycar.sortId();
@@ -102,22 +111,24 @@
 			}, 300)
 		}
 	})
-
+	//事件委托到footer上,通过点击的元素身上的标识对飞船发送命令;
 	$("#footer").on("click",function(e){
 		if($(e.target).attr("data-dothing")){
-			var thing = $(e.target).closest(".move").attr("data-index"),
-				no = $(e.target).attr("data-dothing"),
+				//编号获取当前点击的控制器的编号即飞船编号;
+			var no = $(e.target).closest(".move").attr("data-index"),
+				//寻找当前点击的元素上自定义标识data-dothing
+				thing = $(e.target).attr("data-dothing"),
 				data;
-			if(no==="go"){
-				data=dataDeal.toTwo(thing)+"0001";
+			if(thing==="go"){
+				data=dataDeal.toTwo(no)+"0001";
 				flycar.random(data)
-			}else if(no==="stop"){
-				data=dataDeal.toTwo(thing)+"0010";
+			}else if(thing==="stop"){
+				data=dataDeal.toTwo(no)+"0010";
 				flycar.random(data)
-			}else if(no==="clear"){
-				data=dataDeal.toTwo(thing)+"0011";
+			}else if(thing==="clear"){
+				data=dataDeal.toTwo(no)+"0011";
 				flycar.random(data)
-				adapter.arr[thing-1][3]=3;
+				adapter.arr[no-1][3]=3;
 				adapter.showArr();
 				$(e.target).closest(".move").hide();
 			}	

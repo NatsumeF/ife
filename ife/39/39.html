@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ife 38</title>
+	<style>
+	*{
+		padding: 0;
+		margin:0;
+	}
+	table{
+		box-sizing: border-box;
+		margin: 120px auto;
+	    text-align: center;
+	    width:600px;
+	    position: relative;
+	    border-collapse:collapse;
+	    border-spacing: 0;
+	}
+	table tr:first-child {
+		background: #000;
+		color:#fff;
+		}
+	table td{
+		padding: 10px 30px;
+		width: 39px;
+		position: relative;
+		border: 1px solid #000;
+	}
+	.up{
+		height: 0;
+		width: 0;
+		border-bottom: 10px solid #fff;
+		border-top:0px;
+		border-right:5px solid transparent;
+		border-left:5px solid transparent;
+		position: absolute;
+		right: 5px;
+		top: 5px;
+		cursor: pointer;
+	}
+	.down{
+		height: 0;
+		width: 0;
+		border-top: 10px solid #fff;
+		border-bottom:0px;
+		border-right:5px solid transparent;
+		border-left:5px solid transparent;
+		position: absolute;
+		right: 5px;
+		top: 0px;
+		margin-top:20px;
+		cursor: pointer;
+	}
+	.fixed{
+		position: fixed;
+		top: 0;
+	}
+	</style>
+</head>
+<body>
+</body>
+<script>
+(function() {
+	"use strict"
+
+	function show(arr) {
+		var table=document.createElement("table");
+			table.innerHTML=`<table >
+			<tr> 
+				<td>姓名</td>
+				<td>语文<div class="up"></div><div class="down"></div></td>
+				<td>数学<div class="up"></div><div class="down"></div></td>
+				<td>英语<div class="up"></div><div class="down"></div></td>
+				<td>政治<div class="up"></div><div class="down"></div></td> 
+				<td>生物<div class="up"></div><div class="down"></div></td> 
+			</tr>
+	</table>`;
+		for (let i = 0; i < arr.length; i++) {
+			var tr = document.createElement("tr");
+			for (let j = 0; j < arr[i].length; j++) {
+				var td=document.createElement("td")
+				if (arr[i][j]) {
+					td.innerHTML=arr[i][j];
+				} else {
+					td.innerHTML="";
+				}
+				tr.appendChild(td);
+			}
+			table.appendChild(tr)
+		}
+		document.body.appendChild(table)
+	};
+
+	function arrSort(arr,i, flag) {
+		arr.sort(function(a, b) {
+			return a[i + 1] - b[i + 1];
+		})
+		if (flag) {
+			arr.reverse();
+		}
+	};
+	//表头固定
+	function fixed(ele) {
+		//获取元素到最外层dom的距离;
+		function findOffset(ele, style) {
+			var str = ele[style];
+			if (ele.offsetParent) {
+				return str + findOffset(ele.offsetParent, style);
+			} else {
+				return str;
+			}
+		};
+		//节流函数 传入3个参数; fn 节流的函数, time节流的间隔时间,默认50 , context :函数作用域,默认window ;
+		var throttlev=(function (){
+			var old=new Date().getTime();
+			return function (fn,time,context){
+				var now = new Date().getTime(),
+					time=time?time:50;
+				if(now-old>time){
+					fn.apply(context);
+					old=now;
+				}
+			}
+		})()
+		var top = findOffset(ele, "offsetTop");
+		function _fixed() {
+			if (document.body.scrollTop > top) {
+				ele.classList.add("fixed");
+				console.log(ele.classList)
+			};
+			if (document.body.scrollTop < top) {
+				ele.classList.remove("fixed");
+			}
+		};
+		var time = null;
+		document.addEventListener("scroll", function() {
+			throttlev(_fixed,0);
+		})
+	};
+
+	//初始化
+	function init() {
+			var arr = [
+				["小红", 91, 71, 72, 81, 81],
+				["小明", 51, 83, 58, 55, 88],
+				["小李", 98, 88, 71, 21, 22],
+				["校长", 4, 81, 55, 75, 21],
+				["小红", 91, 71, 72, 81, 81],
+				["小明", 51, 83, 58, 55, 88],
+				["小李", 98, 88, 71, 21, 22],
+				["校长", 4, 81, 55, 75, 21],
+				["小红", 91, 71, 72, 81, 81],
+				["小明", 51, 83, 58, 55, 88],
+				["小李", 98, 88, 71, 21, 22],
+				["校长", 4, 81, 55, 75, 21],
+				["小红", 91, 71, 72, 81, 81],
+				["小明", 51, 83, 58, 55, 88],
+				["小李", 98, 88, 71, 21, 22],
+				["校长", 4, 81, 55, 75, 21],
+				["小红", 91, 71, 72, 81, 81],
+				["小明", 51, 83, 58, 55, 88],
+				["小李", 98, 88, 71, 21, 22],
+				["校长", 4, 81, 55, 75, 21]
+			];
+			show(arr)
+			var table = document.getElementsByTagName("table")[0],
+			up = document.getElementsByClassName("up"),
+			down = document.getElementsByClassName("down"),
+			thead= document.getElementsByTagName("tr")[0];
+		for (let i = 0; i < up.length; i++) {
+			up[i].onclick = function() {
+				arrSort(arr,i);
+				show(arr)
+			};
+			down[i].onclick = function() {
+				arrSort(arr,i, true);
+				show(arr)
+			};
+		};
+		fixed(thead)
+		
+	};
+	init()
+})()
+</script>
+</html>
