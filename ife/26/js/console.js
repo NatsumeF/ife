@@ -18,10 +18,10 @@ Console.prototype.hide=function(){
 Console.prototype.random = function(id, con) {
 	setTimeout(function() {
 		if ((Dath.random() * 100)< 30) {
-			console.log("你对" + id + "号飞船发送的" + con + "指令丢包了");
+			$("textarea").html($("textarea").html()+"你对" + id + "号飞船发送的" + con + "指令丢包了!\n")+;
 			return false;
 		} else {
-			console.log("你对" + id + "号飞船发送的" + con + "指令成功发送");
+			$("textarea").html($("textarea").html()+"你对" + id + "号飞船发送的" + con + "指令成功发送");
 			return true;
 		}
 	},1000)

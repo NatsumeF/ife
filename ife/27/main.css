@@ -196,9 +196,6 @@
 		text-align:center;
 		display: none;
 	}
-	#footer .move span{
-		display: block;
-	}
 	#footer button{
 		height: 40px;
 		width: 40px;
@@ -209,7 +206,7 @@
 		background: #451210;
 		margin:10px;
 	}
-	.new-car{
+	#footer .new-car .new-car-but{
 		height: 80px;
 		width: 80px;
 		border-radius: 50%;
@@ -219,6 +216,21 @@
 		margin:10px;
 		font-size: 22px;
 	}
-	textarea{
-		float: right;
+	#footer .move{
+		padding: 17px;
+		float: left;
+		border:1px #456456 solid;
+		text-align:center;
+		
 	}
+	#footer .move span{
+		display: block;
+	}
+	#footer .new-car{
+		padding: 5px;
+		float: left;
+		color:black;
+		font-size: 16px;
+	}
+
+

@@ -1,15 +1,15 @@
 "use strict"
-function FlyCar(ele, no) {
+function FlyCar(ele,no) {
 	this.ele = ele;
 	this.NO = no;
 	this.div=null;
 };
-FlyCar.prototype.init = function() {
+FlyCar.prototype.init = function(data) {
 	this.energy = 100; //能量
-	this.speed = 5; //速度
-	this.work = 5; //工作消耗
-	this.revert = 2;
-	this.deg = 0; //回复
+	this.speed = Number(data.speed); //速度
+	this.work = Number(data.speed); //工作消耗
+	this.revert = Number(data.revert);//回复
+	this.deg = 0; 
 	this.moveTime;
 	this.addTime;
 	this.show();
@@ -35,7 +35,7 @@ FlyCar.prototype.show = function() {
 FlyCar.prototype.hide = function() {
 	clearInterval(this.addTime);
 	clearInterval(this.moveTime);
-	this.div.hide();
+	this.div.remove();
 };
 FlyCar.prototype.lookMove = function() {
 	this.div.find(".number").html(this.energy.toFixed()) ;
@@ -60,7 +60,6 @@ FlyCar.prototype.move = function() {
 		}
 		than.lookMove()
 	}, 50)
-	console.log(this.addTime+ ' ' + this.moveTime)
 };
 FlyCar.prototype.addWork = function() {
 	var than = this;
@@ -76,13 +75,13 @@ FlyCar.prototype.addWork = function() {
 	}, 1000)
 };
 //接受命令;
-FlyCar.prototype.listen = function(data) {
-	if (this.NO === data.id) {
-		if (data.commond === "stop") {
-			this.addWork();
-		} else if (data.commond === "go") {
-			this.move()
-		} else if (data.commond === "clear") {
+FlyCar.prototype.listen = function(no,commond) {
+	if (this.NO === no) {
+		if (commond === 1) {
+			this.move();
+		} else if (commond === 10) {
+			this.addWork()
+		} else if (commond === 11) {
 			this.hide();
 		}
 	}
