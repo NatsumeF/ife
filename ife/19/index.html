@@ -79,6 +79,12 @@ var arr = [],
 	showArr = document.getElementsByClassName("showArr")[0],
 	randomArr = document.getElementsByClassName('randomArr')[0];
 document.addEventListener("click", function(e) {
+	if(e.target.classList.contains("close")){
+		e.target.parentNode.removeChild(e.target);
+		var index=e.target.getAttribute("data-index");
+		arr.splice(index,1);
+		renderChart();
+	}
 	if (e.target === addArr) {
 		if (inputArr.value % 1 !== 0 || inputArr.value < 10 || inputArr.value > 100) {
 			alert("请输入10-100的整数");
@@ -86,22 +92,19 @@ document.addEventListener("click", function(e) {
 			alert("队列元素不能超过60")
 		} else {
 			arr.push(inputArr.value);
-
+			renderChart()
 		}
-	};
-	if (e.target === randomArr) {
-		arr = [];
-		for (let i = 0; i < 60; i++) {
+	}else if (e.target === randomArr) {
+		for (let i =arr.length; i < 60; i++) {
 			arr.push(Math.floor(Math.random() * 91 + 10))
 		}
 		renderChart();
-	}
-	if (e.target === sortArr) {
+	}else if (e.target === sortArr) {
 		var i = 0,
 			j = 1,
 			index = 0,
 			time = setInterval(srotChart, 0);
-
+			
 		function srotChart() {
 			if (i < arr.length) {
 				if (j < arr.length) {
@@ -134,7 +137,7 @@ document.addEventListener("click", function(e) {
 function renderChart() {
 	var _html = "";
 	for (let i = 0; i < arr.length; i++) {
-		_html += "<div style=height:" + (arr[i] * 4) + "px;" + "left:" + (15 * i + 10) + "px;\"></div>"
+		_html += "<div class=\"close\" data-index=\""+i+"\" style=height:" + (arr[i] * 4) + "px;" + "left:" + (15 * i + 10) + "px;\"></div>"
 	}
 	showArr.innerHTML = _html;
 }
